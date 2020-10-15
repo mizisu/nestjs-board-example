@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { RedocModule, RedocOptions } from 'nestjs-redoc';
@@ -27,6 +28,14 @@ async function bootstrap() {
     };
     // Instead of using SwaggerModule.setup() you call this module
     await RedocModule.setup('/api/v1/docs/', app, document, redocOptions);
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true,
+            forbidNonWhitelisted: true,
+            transform: true,
+        }),
+    );
 
     await app.listen(3000);
 }
