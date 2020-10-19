@@ -1,12 +1,19 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import AdminBro from 'admin-bro';
 import { RedocModule, RedocOptions } from 'nestjs-redoc';
 import { AppModule } from './app.module';
+import * as AdminBroExpress from '@admin-bro/express';
+import { Database, Resource } from '@admin-bro/typeorm';
+import { User } from './users/entities/user.entity';
+import { Kind } from './boards/entities/kind.entity';
+import { Board } from './boards/entities/board.entity';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
+    // Setup API docs
     const options = new DocumentBuilder()
         .setTitle('Food board')
         .setDescription('The Food board API')
@@ -36,6 +43,23 @@ async function bootstrap() {
             transform: true,
         }),
     );
+
+    // Setup admin
+    AdminBro.registerAdapter({ Database, Resource });
+
+    const adminBro = new AdminBro({
+        rootPath: '/admin',
+        resources: [
+            { resource: User },
+            { resource: Board },
+            { resource: Kind },
+        ],
+        branding: {
+            companyName: 'Board',
+        },
+    });
+    const router = AdminBroExpress.buildRouter(adminBro);
+    app.use(adminBro.options.rootPath, router);
 
     await app.listen(3000);
 }
