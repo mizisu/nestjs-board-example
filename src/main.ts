@@ -49,7 +49,7 @@ async function setupAdmin(app: INestApplication) {
     const adminBro = new AdminBro({
         rootPath: '/admin',
         resources: [
-            { resource: User },
+            // { resource: User },
             { resource: Board },
             { resource: Kind },
         ],
