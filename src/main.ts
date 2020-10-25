@@ -9,6 +9,7 @@ import { Database, Resource } from '@admin-bro/typeorm';
 import { User } from './users/entities/user.entity';
 import { Kind } from './boards/entities/kind.entity';
 import { Board } from './boards/entities/board.entity';
+import bcrypt from 'bcrypt-nodejs';
 
 async function setupSwagger(app: INestApplication) {
     const options = new DocumentBuilder()
@@ -35,6 +36,9 @@ async function setupSwagger(app: INestApplication) {
 }
 
 async function setupAdmin(app: INestApplication) {
+    const canModifyUsers = ({ currentAdmin }) =>
+        currentAdmin && currentAdmin.isSuperUser;
+
     app.useGlobalPipes(
         new ValidationPipe({
             whitelist: true,
@@ -49,7 +53,39 @@ async function setupAdmin(app: INestApplication) {
     const adminBro = new AdminBro({
         rootPath: '/admin',
         resources: [
-            // { resource: User },
+            {
+                resource: User,
+                options: {
+                    properties: {
+                        encryptedPassword: { isVisible: false },
+                        password: {
+                            type: 'password',
+                            isVisible: {
+                                list: false,
+                                edit: true,
+                                filter: false,
+                                show: false,
+                            },
+                        },
+                    },
+                    actions: {
+                        new: {
+                            before: async request => {
+                                if (request.payload.record.password) {
+                                    request.payload.record = {
+                                        ...request.payload.record,
+                                        encryptedPassword: bcrypt.hashSync(
+                                            request.payload.record.password,
+                                        ),
+                                        password: undefined,
+                                    };
+                                }
+                                return request;
+                            },
+                        },
+                    },
+                },
+            },
             { resource: Board },
             { resource: Kind },
         ],
@@ -57,7 +93,20 @@ async function setupAdmin(app: INestApplication) {
             companyName: 'Board',
         },
     });
-    const router = AdminBroExpress.buildRouter(adminBro);
+
+    const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
+        authenticate: async (email, password) => {
+            const user = await User.findOne({ email });
+            if (user) {
+                if (bcrypt.compareSync(password, user.encryptedPassword)) {
+                    return user;
+                }
+            }
+            return false;
+        },
+        cookiePassword: 'session Key',
+    });
+
     app.use(adminBro.options.rootPath, router);
 }
 
