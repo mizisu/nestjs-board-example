@@ -1,5 +1,9 @@
 # nestjs-board-example
-
+## Run server
+```shell
+$ npm i
+$ npm run start:dev
+```
 ## Overview
 ### Swagger docs
 ```
@@ -14,9 +18,3 @@ password: admin
 http://localhost:8000/admin/
 ```
 ### TypeORM
-
-## Run development server
-```shell
-$ npm i
-$ npm run start:dev
-```
