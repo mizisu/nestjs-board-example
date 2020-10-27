@@ -10,6 +10,10 @@ import { User } from './users/entities/user.entity';
 import { Kind } from './boards/entities/kind.entity';
 import { Board } from './boards/entities/board.entity';
 import bcrypt from 'bcrypt-nodejs';
+import session from 'express-session';
+import SessionFileStore from 'session-file-store';
+
+const FileStore = SessionFileStore(session);
 
 async function setupSwagger(app: INestApplication) {
     const options = new DocumentBuilder()
@@ -71,11 +75,12 @@ async function setupAdmin(app: INestApplication) {
                     actions: {
                         new: {
                             before: async request => {
-                                if (request.payload.record.password) {
-                                    request.payload.record = {
-                                        ...request.payload.record,
+                                console.log(request.payload);
+                                if (request.payload.password) {
+                                    request.payload = {
+                                        ...request.payload,
                                         encryptedPassword: bcrypt.hashSync(
-                                            request.payload.record.password,
+                                            request.payload.password,
                                         ),
                                         password: undefined,
                                     };
@@ -94,18 +99,26 @@ async function setupAdmin(app: INestApplication) {
         },
     });
 
-    const router = AdminBroExpress.buildAuthenticatedRouter(adminBro, {
-        authenticate: async (email, password) => {
-            const user = await User.findOne({ email });
-            if (user) {
-                if (bcrypt.compareSync(password, user.encryptedPassword)) {
-                    return user;
+    const router = AdminBroExpress.buildAuthenticatedRouter(
+        adminBro,
+        {
+            authenticate: async (email, password) => {
+                const user = await User.findOne({ email });
+                if (user) {
+                    if (bcrypt.compareSync(password, user.encryptedPassword)) {
+                        return user;
+                    }
                 }
-            }
-            return false;
+                return false;
+            },
+            cookiePassword: 'asdf',
         },
-        cookiePassword: 'session Key',
-    });
+        null,
+        {
+            store: new FileStore({}),
+            secret: 'asdf',
+        },
+    );
 
     app.use(adminBro.options.rootPath, router);
 }
