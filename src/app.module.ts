@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Board } from './boards/entities/board.entity';
 import { Kind } from './boards/entities/kind.entity';
 import { User } from './users/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { User } from './users/entities/user.entity';
         }),
         BoardsModule,
         UsersModule,
+        AuthModule,
     ],
     controllers: [],
     providers: [],

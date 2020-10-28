@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import bcrypt from 'bcrypt-nodejs';
+import { FindConditions, FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class UsersService implements OnModuleInit {
@@ -16,5 +17,9 @@ export class UsersService implements OnModuleInit {
             r.save();
             console.log('Create', r);
         }
+    }
+
+    async findOne(options?: FindConditions<User>): Promise<User> {
+        return await User.findOne(options);
     }
 }

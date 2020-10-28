@@ -1,6 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    UseGuards,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { identity } from 'rxjs';
 import { BoardsService } from './boards.service';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';
 
@@ -23,6 +30,6 @@ export class BoardsController {
     })
     @Get('/boards/')
     getAll() {
-        return 'All movies';
+        return 'All boards';
     }
 }
