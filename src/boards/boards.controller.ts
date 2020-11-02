@@ -5,11 +5,13 @@ import {
     Get,
     Param,
     Post,
+    Query,
     UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BoardsService } from './boards.service';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';
+import { GetAllBoardsQueryDto } from './dto/getAllBoardQeury.dto';
 
 @ApiTags('Boards')
 @Controller()
@@ -29,7 +31,10 @@ export class BoardsController {
         operationId: 'Get all boards',
     })
     @Get('/boards/')
-    getAll() {
-        return 'All boards';
+    async getAll(@Query() query: GetAllBoardsQueryDto) {
+        return await this.boardsService.getAllBoards(
+            query.page,
+            query.pageSize,
+        );
     }
 }
