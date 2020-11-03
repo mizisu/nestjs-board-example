@@ -9,9 +9,9 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { PaginationQueryDto } from 'src/core/dto/PaginationQuery.dto';
 import { BoardsService } from './boards.service';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';
-import { GetAllBoardsQueryDto } from './dto/getAllBoardQeury.dto';
 
 @ApiTags('Boards')
 @Controller()
@@ -23,7 +23,7 @@ export class BoardsController {
     })
     @ApiResponse({ status: 200, type: [GetAllKindsDto] })
     @Get('boards/kinds/')
-    async getAllKinds(): Promise<GetAllKindsDto[]> {
+    async getAllKinds() {
         return await this.boardsService.getAllKinds();
     }
 
@@ -31,10 +31,7 @@ export class BoardsController {
         operationId: 'Get all boards',
     })
     @Get('/boards/')
-    async getAll(@Query() query: GetAllBoardsQueryDto) {
-        return await this.boardsService.getAllBoards(
-            query.page,
-            query.pageSize,
-        );
+    async getAll(@Query() query: PaginationQueryDto) {
+        return await this.boardsService.getAllBoards(query);
     }
 }
