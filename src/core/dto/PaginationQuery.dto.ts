@@ -5,7 +5,7 @@ export class PaginationQueryDto {
     @Transform(id => (id ? parseInt(id, 10) : id))
     @IsNumber()
     @IsOptional()
-    page?: number = 0;
+    page?: number = 1;
 
     @Transform(id => (id ? parseInt(id, 10) : id))
     @IsNumber()

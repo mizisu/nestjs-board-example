@@ -15,21 +15,9 @@ export class BoardsService {
     public async getAllBoards(
         paginationDto: PaginationQueryDto,
     ): Promise<PaginationResultDto<GetAllBoardsDto>> {
-        const skipSize =
-            Math.abs(paginationDto.page - 1) * paginationDto.pageSize;
-
-        const count = await Board.count();
-        const boards = await Board.createQueryBuilder()
-            .orderBy('id', 'DESC')
-            .offset(skipSize)
-            .take(paginationDto.pageSize)
-            .getMany();
-
-        return {
-            count,
-            page: paginationDto.page,
-            next: '',
-            results: boards,
-        };
+        return PaginationResultDto.fromQuerybuilder(
+            Board.createQueryBuilder().orderBy('id', 'DESC'),
+            paginationDto,
+        );
     }
 }
