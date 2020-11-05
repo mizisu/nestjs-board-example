@@ -1,4 +1,6 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsUrl } from 'class-validator';
+import { type } from 'os';
 import { BaseEntity, SelectQueryBuilder } from 'typeorm';
 import { PaginationQueryDto } from './PaginationQuery.dto';
 
@@ -22,15 +24,19 @@ export class PaginationResultDto<T> {
         };
     }
 
+    @ApiProperty()
     @IsNumber()
     count: number;
 
+    @ApiProperty()
     @IsUrl()
     next: string;
 
+    @ApiProperty()
     @IsUrl()
     previous: string;
 
+    @ApiProperty()
     @IsArray()
     results: T[];
 }
