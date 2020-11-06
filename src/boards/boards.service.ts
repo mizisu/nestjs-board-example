@@ -14,7 +14,7 @@ export class BoardsService {
 
     public async getAllBoards(
         paginationDto: PaginationQueryDto,
-    ): Promise<PaginationResultDto<GetAllBoardsDto>> {
+    ): Promise<GetAllBoardsDto> {
         return PaginationResultDto.fromQuerybuilder(
             Board.createQueryBuilder().orderBy('id', 'DESC'),
             paginationDto,
