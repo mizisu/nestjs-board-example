@@ -1,26 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNumber, IsUrl } from 'class-validator';
-import { type } from 'os';
 import { BaseEntity, SelectQueryBuilder } from 'typeorm';
-import { PaginationQueryDto } from './PaginationQuery.dto';
 
 export class PaginationResultDto<T> {
     static async fromQuerybuilder<U extends BaseEntity>(
         queryBuilder: SelectQueryBuilder<U>,
-        query: PaginationQueryDto,
+        page: number,
+        pageSize: number,
     ): Promise<PaginationResultDto<U>> {
-        const skipSize = Math.abs(query.page - 1) * query.pageSize;
+        const skipSize = Math.abs(page - 1) * pageSize;
         const count = await queryBuilder.getCount();
-        const boards = await queryBuilder
+        const data = await queryBuilder
             .offset(skipSize)
-            .limit(query.pageSize)
+            .limit(pageSize)
             .getMany();
 
         return {
             count,
             previous: '',
             next: '',
-            results: boards,
+            results: data,
         };
     }
 

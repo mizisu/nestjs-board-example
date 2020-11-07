@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginationResultDto } from 'src/core/dto/PaginationResult.dto';
 
-class GetAllBoardsDtoItem {
+export class GetAllBoardsDto {
     @ApiProperty()
     id: number;
 
@@ -11,5 +10,3 @@ class GetAllBoardsDtoItem {
     @ApiProperty()
     content: string;
 }
-
-export class GetAllBoardsDto extends PaginationResultDto<GetAllBoardsDtoItem> {}
