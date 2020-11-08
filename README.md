@@ -7,9 +7,10 @@ $ npm i
 $ npm run start:dev
 ```
 
-## Overview
+## Feature
 
 -   Swagger docs
 -   Admin bro intergration
 -   TypeORM
 -   JWT authentication
+-   Pagination

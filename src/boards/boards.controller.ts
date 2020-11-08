@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import {
     ApiExtraModels,
     ApiOperation,
@@ -8,6 +8,7 @@ import {
 import { ApiPaginatedDto } from 'src/core/decorator/paginationResponse';
 import { PaginationResultDto } from 'src/core/dto/paginationResult.dto';
 import { BoardsService } from './boards.service';
+import { CreateBoardDto } from './dto/createBoard.dto';
 import { GetAllBoardsDto } from './dto/getAllBoards.dto';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';
 
@@ -37,4 +38,10 @@ export class BoardsController {
     ): Promise<PaginationResultDto<GetAllBoardsDto>> {
         return await this.boardsService.getAllBoards(page, pageSize);
     }
+
+    @ApiOperation({
+        operationId: 'Create boards',
+    })
+    @Post('/boards/')
+    async createBoard(@Body() body: CreateBoardDto) {}
 }
