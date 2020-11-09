@@ -1,5 +1,7 @@
 import { Injectable, Query } from '@nestjs/common';
+import { create } from 'domain';
 import { PaginationResultDto } from 'src/core/dto/paginationResult.dto';
+import { CreateBoardDto } from './dto/createBoard.dto';
 import { GetAllBoardsDto } from './dto/getAllBoards.dto';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';
 import { Board } from './entities/board.entity';
@@ -20,5 +22,14 @@ export class BoardsService {
             page,
             pageSize,
         );
+    }
+
+    public async createBoard(createBoardDto: CreateBoardDto) {
+        return Board.create({
+            title: createBoardDto.title,
+            content: createBoardDto.content,
+            kind: await Kind.findOne(createBoardDto.kindId),
+            revisit: createBoardDto.revisit,
+        });
     }
 }

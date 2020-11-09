@@ -43,5 +43,7 @@ export class BoardsController {
         operationId: 'Create boards',
     })
     @Post('/boards/')
-    async createBoard(@Body() body: CreateBoardDto) {}
+    async createBoard(@Body() body: CreateBoardDto) {
+        return await this.boardsService.createBoard(body);
+    }
 }

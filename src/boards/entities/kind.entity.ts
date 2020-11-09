@@ -1,4 +1,12 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinColumn,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Board } from './board.entity';
 
 @Entity()
 export class Kind extends BaseEntity {
@@ -12,4 +20,14 @@ export class Kind extends BaseEntity {
         default: false,
     })
     featured: boolean;
+
+    @OneToMany(
+        () => Board,
+        board => board.kind,
+    )
+    boards: Board[];
+
+    public toString(): string {
+        return `${name}`;
+    }
 }
