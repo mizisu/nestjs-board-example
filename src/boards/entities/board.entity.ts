@@ -1,3 +1,4 @@
+import { User } from 'src/users/entities/user.entity';
 import {
     BaseEntity,
     Column,
@@ -15,6 +16,12 @@ import { Kind } from './kind.entity';
 export class Board extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @ManyToOne(
+        () => User,
+        user => user.boards,
+    )
+    user: User;
 
     @ManyToOne(
         () => Kind,

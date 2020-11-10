@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Post,
+    Query,
+    Request,
+    UseGuards,
+} from '@nestjs/common';
 import {
     ApiExtraModels,
     ApiOperation,
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiPaginatedDto } from 'src/core/decorator/paginationResponse';
 import { PaginationResultDto } from 'src/core/dto/paginationResult.dto';
 import { BoardsService } from './boards.service';
@@ -42,8 +51,9 @@ export class BoardsController {
     @ApiOperation({
         operationId: 'Create boards',
     })
+    @UseGuards(JwtAuthGuard)
     @Post('/boards/')
-    async createBoard(@Body() body: CreateBoardDto) {
-        return await this.boardsService.createBoard(body);
+    async createBoard(@Request() req, @Body() body: CreateBoardDto) {
+        return await this.boardsService.createBoard(req.user, body);
     }
 }
