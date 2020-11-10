@@ -1,7 +1,6 @@
-import { Injectable, Query } from '@nestjs/common';
-import { create } from 'domain';
-import { PaginationResultDto } from 'src/core/dto/paginationResult.dto';
-import { User } from 'src/users/entities/user.entity';
+import { Injectable } from '@nestjs/common';
+import { PaginationResultDto } from '../core/dto/paginationResult.dto';
+import { User } from '..//users/entities/user.entity';
 import { CreateBoardDto } from './dto/createBoard.dto';
 import { GetAllBoardsDto } from './dto/getAllBoards.dto';
 import { GetAllKindsDto } from './dto/getAllKinds.dto';

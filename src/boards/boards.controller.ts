@@ -13,9 +13,9 @@ import {
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ApiPaginatedDto } from 'src/core/decorator/paginationResponse';
-import { PaginationResultDto } from 'src/core/dto/paginationResult.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ApiPaginatedDto } from '../core/decorator/paginationResponse';
+import { PaginationResultDto } from '../core/dto/paginationResult.dto';
 import { BoardsService } from './boards.service';
 import { CreateBoardDto } from './dto/createBoard.dto';
 import { GetAllBoardsDto } from './dto/getAllBoards.dto';
