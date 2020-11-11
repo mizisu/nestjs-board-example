@@ -19,8 +19,8 @@ export class AuthController {
         type: AccessTokenDto,
     })
     @Post('/sign-in/')
-    signIn(@Body() body: SignInDto) {
-        this.authService.signIn(body);
+    async signIn(@Body() body: SignInDto) {
+        return await this.authService.signIn(body);
     }
 
     @ApiOperation({

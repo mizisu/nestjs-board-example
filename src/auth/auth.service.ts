@@ -35,13 +35,14 @@ export class AuthService {
         }
     }
 
-    signIn(data: SignInDto) {
+    async signIn(data: SignInDto) {
+        // const user = await User.findOne({ email: data.email});
         const newUser = User.create({
             email: data.email,
             username: data.username,
             encryptedPassword: bcrypt.hashSync(data.password),
         });
-        newUser.save();
+        await newUser.save();
         return this.getToken(newUser);
     }
 
