@@ -17,6 +17,7 @@ import { PaginationResultDto } from './core/dto/paginationResult.dto';
             entities: [User, Board, Kind],
             synchronize: true,
             logging: true,
+            keepConnectionAlive: true,
         }),
         BoardsModule,
         UsersModule,
