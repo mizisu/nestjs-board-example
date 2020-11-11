@@ -1,5 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBadRequestResponse,
+    ApiOperation,
+    ApiResponse,
+    ApiTags,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AccessTokenDto } from './dto/accessToken.dto';
 import { LoginDto } from './dto/login.dto';
@@ -17,6 +22,9 @@ export class AuthController {
         status: 201,
         description: 'Sign in success',
         type: AccessTokenDto,
+    })
+    @ApiBadRequestResponse({
+        description: 'email_or_username_already_in_use',
     })
     @Post('/sign-in/')
     async signIn(@Body() body: SignInDto) {
