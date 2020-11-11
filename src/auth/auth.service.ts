@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.services';
 import bcrypt from 'bcrypt-nodejs';
 import { JwtService } from '@nestjs/jwt';
@@ -36,7 +36,11 @@ export class AuthService {
     }
 
     async signIn(data: SignInDto) {
-        // const user = await User.findOne({ email: data.email});
+        const user = await User.findOne({ email: data.email});
+        if (user) {
+            throw new HttpException('email_or_username_already_in_use', HttpStatus.BAD_REQUEST);
+       }
+
         const newUser = User.create({
             email: data.email,
             username: data.username,
