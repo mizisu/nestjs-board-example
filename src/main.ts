@@ -128,6 +128,7 @@ async function bootstrap() {
     app.setGlobalPrefix('/api/v1');
     await setupSwagger(app);
     await setupAdmin(app);
+    app.enableCors();
     await app.listen(8000);
 }
 bootstrap();
