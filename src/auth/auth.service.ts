@@ -36,12 +36,13 @@ export class AuthService {
     }
 
     async signIn(data: SignInDto) {
-        const user = await User.findOne({ email: data.email });
-        if (user) {
+        const userFound =
+            (await User.count({
+                where: [{ email: data.email }, { username: data.username }],
+            })) > 0;
+        if (userFound) {
             throw new HttpException(
-                {
-                    code: 'email_or_username_already_in_use',
-                },
+                { code: 'email_or_username_already_in_use' },
                 HttpStatus.BAD_REQUEST,
             );
         }
