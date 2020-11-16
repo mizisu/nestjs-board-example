@@ -7,7 +7,7 @@ import { TestApp } from './app.test';
 describe('BoardController (e2e)', () => {
     it('/api/v1/boards/ (POST)', () => {
         return request(TestApp.getHttpServer())
-            .post('api/v1/boards/')
+            .post('/api/v1/boards/')
             .send({})
             .expect(201);
     });
