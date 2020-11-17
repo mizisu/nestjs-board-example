@@ -9,16 +9,20 @@ import { AuthModule } from './auth/auth.module';
 import { ApiExtraModels } from '@nestjs/swagger';
 import { PaginationResultDto } from './core/dto/paginationResult.dto';
 
+export function getTypeOrmModule(db) {
+    return TypeOrmModule.forRoot({
+        type: 'sqlite',
+        database: db,
+        entities: [User, Board, Kind],
+        synchronize: true,
+        logging: true,
+        keepConnectionAlive: true,
+    });
+}
+
 @Module({
     imports: [
-        TypeOrmModule.forRoot({
-            type: 'sqlite',
-            database: 'sqlite3.db',
-            entities: [User, Board, Kind],
-            synchronize: true,
-            logging: true,
-            keepConnectionAlive: true,
-        }),
+        getTypeOrmModule('sqlite3.db'),
         BoardsModule,
         UsersModule,
         AuthModule,
