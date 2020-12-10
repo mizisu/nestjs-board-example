@@ -10,7 +10,14 @@ $ npm run start:dev
 ## Feature
 
 -   Swagger docs
--   Admin bro intergration
+-   Admin bro integration
 -   TypeORM
 -   JWT authentication
 -   Pagination
+
+
+## Urls
+- Admin : /admin
+    - admin@admin.com
+    - admin
+- API docs : /api/v1/docs/
