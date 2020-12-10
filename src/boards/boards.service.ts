@@ -25,12 +25,14 @@ export class BoardsService {
     }
 
     public async createBoard(user: User, createBoardDto: CreateBoardDto) {
-        return Board.create({
+        const newBoard = Board.create({
             title: createBoardDto.title,
             content: createBoardDto.content,
             kind: await Kind.findOne(createBoardDto.kindId),
             user,
             revisit: createBoardDto.revisit,
         });
+        newBoard.save();
+        return newBoard;
     }
 }
